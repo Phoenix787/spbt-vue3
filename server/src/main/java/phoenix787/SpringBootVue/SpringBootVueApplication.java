@@ -1,5 +1,6 @@
 package phoenix787.SpringBootVue;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +18,8 @@ import java.util.stream.Stream;
 
 @SpringBootApplication
 public class SpringBootVueApplication {
-
+	@Value("${client.url}")
+	private String clientUrl;
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootVueApplication.class, args);
 	}
@@ -37,11 +39,12 @@ public class SpringBootVueApplication {
 
 	@Bean
 	public FilterRegistrationBean simpleCorsFilter() {
+
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
 		// *** URL below needs to match the Vue client URL and port ***
-		config.setAllowedOrigins(Collections.singletonList("http://localhost:8081")); //здесь адрес клиента
+		config.setAllowedOrigins(Collections.singletonList(clientUrl)); //здесь адрес клиента
 		config.setAllowedMethods(Collections.singletonList("*"));
 		config.setAllowedHeaders(Collections.singletonList("*"));
 		source.registerCorsConfiguration("/**", config);
